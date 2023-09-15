@@ -1,0 +1,181 @@
+import java.util.Arrays;
+
+class Spacecraft {
+    private int x, y, z;
+    private Direction direction;
+
+    public Spacecraft(int x, int y, int z, Direction direction) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.direction = direction;
+    }
+
+    public void executeCommands(String[] commands) {
+        for (String command : commands) {
+            switch (command) {
+                case "f":
+                    moveForward();
+                    break;
+                case "b":
+                    moveBackward();
+                    break;
+                case "r":
+                    turnRight();
+                    break;
+                case "l":
+                    turnLeft();
+                    break;
+                case "u":
+                    tiltUp();
+                    break;
+                case "d":
+                    tiltDown();
+                    break;
+            }
+        }
+    }
+
+    public void printFinalPositionAndDirection() {
+        System.out.println("Final Position: (" + x + ", " + y + ", " + z + ")");
+        System.out.println("Final Direction: " + direction);
+    }
+
+    private void moveForward() {
+        switch (direction) {
+            case N:
+                y++;
+                break;
+            case S:
+                y--;
+                break;
+            case E:
+                x++;
+                break;
+            case W:
+                x--;
+                break;
+            case Up:
+                z++;
+                break;
+            case Down:
+                z--;
+                break;
+        }
+    }
+
+    private void moveBackward() {
+        switch (direction) {
+            case N:
+                y--;
+                break;
+            case S:
+                y++;
+                break;
+            case E:
+                x--;
+                break;
+            case W:
+                x++;
+                break;
+            case Up:
+                z--;
+                break;
+            case Down:
+                z++;
+                break;
+        }
+    }
+
+    private void turnRight() {
+        direction = direction.turnRight();
+    }
+
+    private void turnLeft() {
+        direction = direction.turnLeft();
+    }
+
+    private void tiltUp() {
+        direction = direction.tiltUp();
+    }
+
+    private void tiltDown() {
+        direction = direction.tiltDown();
+    }
+}
+
+enum Direction {
+    N, S, E, W, Up, Down;
+
+    public Direction turnRight() {
+        switch (this) {
+            case N:
+                return E;
+            case E:
+                return S;
+            case S:
+                return W;
+            case W:
+                return N;
+            default:
+                return this;
+        }
+    }
+
+    public Direction turnLeft() {
+        switch (this) {
+            case N:
+                return W;
+            case W:
+                return S;
+            case S:
+                return E;
+            case E:
+                return N;
+            default:
+                return this;
+        }
+    }
+
+    public Direction tiltUp() {
+        switch (this) {
+            case N:
+                return Up;
+            case Up:
+                return S;
+            case S:
+                return Down;
+            case Down:
+                return N;
+            default:
+                return this;
+        }
+    }
+
+    public Direction tiltDown() {
+        switch (this) {
+            case N:
+                return Down;
+            case Down:
+                return S;
+            case S:
+                return Up;
+            case Up:
+                return N;
+            default:
+                return this;
+        }
+    }
+}
+
+public class Chandrayaan3Control {
+    public static void main(String[] args) {
+        int initialX = 0, initialY = 0, initialZ = 0;
+        Direction initialDirection = Direction.N;
+        String[] commands = {"f", "r", "u", "b", "l"};
+
+        Spacecraft spacecraft = new Spacecraft(initialX, initialY, initialZ, initialDirection);
+        spacecraft.executeCommands(commands);
+        spacecraft.printFinalPositionAndDirection();
+    }
+}
